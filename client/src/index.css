@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🔥 GLOBAL FONT APPLY */
+body {
+  @apply font-poppins;
+}
+
+/* 👉 Headings ke liye premium font */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-montserrat tracking-wide;
+}
+
+/* Existing input style */
+.input {
+  @apply w-full border p-2 mb-2 rounded-lg;
+}
+
+/* 🔥 BLINK BUTTON */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.blink-btn {
+  animation: blink 1.2s infinite;
+}
+
+/* SMOOTH SCROLL */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===================================================== */
+/* 🔥🔥 PREMIUM CONTINUOUS TICKER (NO GAP) 🔥🔥 */
+/* ===================================================== */
+
+/* wrapper already handled by overflow-hidden in JSX */
+
+/* moving track */
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: scroll 18s linear infinite;
+}
+
+/* pause on hover (premium feel 😎) */
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* text styling */
+.ticker-content {
+  white-space: nowrap;
+  padding-right: 60px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
