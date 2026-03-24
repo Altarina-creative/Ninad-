@@ -22,20 +22,27 @@ export default function Cart() {
   // Load cart
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("cart")) || [];
-    const withQty = saved.map((item) => ({ ...item, qty: 1 }));
+
+    // ✅ FIX
+    const withQty = saved.map((item) => ({
+      ...item,
+      _id: item._id || item.id,
+      qty: 1
+    }));
+
     setCart(withQty);
   }, []);
 
   // Quantity
   const increaseQty = (id) => {
     setCart(cart.map(item =>
-      item.id === id ? { ...item, qty: item.qty + 1 } : item
+      item._id === id ? { ...item, qty: item.qty + 1 } : item
     ));
   };
 
   const decreaseQty = (id) => {
     setCart(cart.map(item =>
-      item.id === id && item.qty > 1
+      item._id === id && item.qty > 1
         ? { ...item, qty: item.qty - 1 }
         : item
     ));
@@ -43,7 +50,7 @@ export default function Cart() {
 
   // Remove
   const removeItem = (id) => {
-    const updated = cart.filter(item => item.id !== id);
+    const updated = cart.filter(item => item._id !== id);
     setCart(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
   };
@@ -64,7 +71,6 @@ export default function Cart() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ ONLY FIXED LINE HERE
   const handleOrder = async () => {
     try {
       const fullAddress = `
@@ -75,7 +81,7 @@ export default function Cart() {
         ${form.country} - ${form.pincode}
       `;
 
-      await axios.post("https://ninad.onrender.com/api/order", {  // ✅ FIXED (ONLY CHANGE)
+      await axios.post("https://ninad.onrender.com/api/order", {
         cart,
         total,
         email: form.email,
@@ -139,7 +145,7 @@ export default function Cart() {
             </div>
           ) : (
             cart.map(item => (
-              <div key={item.id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
+              <div key={item._id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
                 <div className="flex gap-4 items-center">
                   <img
                     src={item.img || "https://via.placeholder.com/100"}
@@ -150,14 +156,14 @@ export default function Cart() {
                     <p className="text-green-600">₹{item.price}</p>
 
                     <div className="flex gap-3 mt-2">
-                      <button onClick={() => decreaseQty(item.id)} className="px-2 bg-gray-200">-</button>
+                      <button onClick={() => decreaseQty(item._id)} className="px-2 bg-gray-200">-</button>
                       <span>{item.qty}</span>
-                      <button onClick={() => increaseQty(item.id)} className="px-2 bg-gray-200">+</button>
+                      <button onClick={() => increaseQty(item._id)} className="px-2 bg-gray-200">+</button>
                     </div>
                   </div>
                 </div>
 
-                <button onClick={() => removeItem(item.id)} className="text-red-500">
+                <button onClick={() => removeItem(item._id)} className="text-red-500">
                   Remove
                 </button>
               </div>
@@ -201,55 +207,15 @@ export default function Cart() {
 
               <select name="state" onChange={handleChange} className="input w-1/2">
                 <option value="">Select State</option>
-
-                <optgroup label="States">
-                  <option>Andhra Pradesh</option>
-                  <option>Arunachal Pradesh</option>
-                  <option>Assam</option>
-                  <option>Bihar</option>
-                  <option>Chhattisgarh</option>
-                  <option>Goa</option>
-                  <option>Gujarat</option>
-                  <option>Haryana</option>
-                  <option>Himachal Pradesh</option>
-                  <option>Jharkhand</option>
-                  <option>Karnataka</option>
-                  <option>Kerala</option>
-                  <option>Madhya Pradesh</option>
-                  <option>Maharashtra</option>
-                  <option>Manipur</option>
-                  <option>Meghalaya</option>
-                  <option>Mizoram</option>
-                  <option>Nagaland</option>
-                  <option>Odisha</option>
-                  <option>Punjab</option>
-                  <option>Rajasthan</option>
-                  <option>Sikkim</option>
-                  <option>Tamil Nadu</option>
-                  <option>Telangana</option>
-                  <option>Tripura</option>
-                  <option>Uttar Pradesh</option>
-                  <option>Uttarakhand</option>
-                  <option>West Bengal</option>
-                </optgroup>
-
-                <optgroup label="Union Territories">
-                  <option>Andaman and Nicobar Islands</option>
-                  <option>Chandigarh</option>
-                  <option>Dadra and Nagar Haveli and Daman and Diu</option>
-                  <option>Delhi</option>
-                  <option>Jammu and Kashmir</option>
-                  <option>Ladakh</option>
-                  <option>Lakshadweep</option>
-                  <option>Puducherry</option>
-                </optgroup>
+                <option>Kerala</option>
+                <option>Maharashtra</option>
+                <option>Uttarakhand</option>
               </select>
             </div>
 
             <div className="flex gap-2">
               <select name="country" onChange={handleChange} className="input w-1/2" defaultValue="India">
                 <option>India</option>
-                <option>USA</option>
               </select>
 
               <input name="pincode" placeholder="Postal Code" onChange={handleChange} className="input w-1/2" />
