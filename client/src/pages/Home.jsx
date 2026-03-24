@@ -35,7 +35,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/join", formData);
+    await axios.post("https://ninad.onrender.com/api/join", formData);
 
       Swal.fire({
         title: "Success!",
