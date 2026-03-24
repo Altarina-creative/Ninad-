@@ -9,7 +9,7 @@ export default function Product() {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products")
+    axios.get("https://ninad.onrender.com/api/product/products")
       .then(res => setProducts(res.data));
   }, []);
 
@@ -45,7 +45,7 @@ export default function Product() {
             key={p._id}
             className="backdrop-blur-lg bg-white/70 border border-white/40 rounded-2xl shadow-lg hover:shadow-2xl transition duration-500 overflow-hidden group"
           >
-            {/* IMAGE FIXED (NO CROP) */}
+            {/* IMAGE */}
             <div className="w-full bg-white flex items-center justify-center p-3">
               <img
                 src={p.img}
@@ -85,7 +85,7 @@ export default function Product() {
         ))}
       </div>
 
-      {/* FLOATING CART BUTTON */}
+      {/* FLOATING CART */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => navigate("/cart")}
