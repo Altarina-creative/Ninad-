@@ -22,14 +22,18 @@ const createOrder = async (req, res) => {
     // 🔥 EMAIL TRY (fail ho to crash na ho)
     try {
       const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",   // ✅ FIX
-        port: 465,                // ✅ FIX
-        secure: true,             // ✅ FIX
+        host: "smtp.gmail.com",
+        port: 587,              //  (465 → 587)
+        secure: false,          //  FIX
+        requireTLS: true,       // ADD
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS,
         },
       });
+
+      await transporter.verify();   //
+      console.log("SMTP READY ✅");
 
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
