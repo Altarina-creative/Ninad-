@@ -22,7 +22,9 @@ const createOrder = async (req, res) => {
     // 🔥 EMAIL TRY (fail ho to crash na ho)
     try {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",   // ✅ FIX
+        port: 465,                // ✅ FIX
+        secure: true,             // ✅ FIX
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS,
