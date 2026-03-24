@@ -23,11 +23,6 @@ app.use("/api/order", orderRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/join", joinRoutes);
 
-// Root route
-app.get("/", (req, res) => {
-  res.send("NINAD API is running 🚀");
-});
-
 // MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
@@ -37,7 +32,7 @@ mongoose
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// ✅ FIX: Express v5 wildcard issue avoid
+// ✅ FINAL FIX (React app load karega)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
