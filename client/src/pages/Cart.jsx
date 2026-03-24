@@ -81,7 +81,7 @@ export default function Cart() {
         ${form.country} - ${form.pincode}
       `;
 
-      await axios.post("https://ninad.onrender.com/api/order", {
+await axios.post("https://ninad.onrender.com/api/order/order", {
         cart,
         total,
         email: form.email,
