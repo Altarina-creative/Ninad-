@@ -37,8 +37,8 @@ mongoose
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// ✅ FINAL FIX (Express v5)
-app.get("/(.*)", (req, res) => {
+// ✅ FIX: Express v5 wildcard issue avoid
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
