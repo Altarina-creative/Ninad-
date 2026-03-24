@@ -10,7 +10,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" })); // ✅ FIX ADDED
+app.use(express.urlencoded({ limit: "10mb", extended: true })); // ✅ FIX ADDED
 
 // Routes
 const contactRoutes = require("./routes/contactRoutes");
@@ -32,7 +33,7 @@ mongoose
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// ✅ FINAL FIX (React app load karega)
+// React fallback
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
