@@ -26,7 +26,7 @@ export default function Admin() {
 
   const fetchProducts = () => {
     axios.get(`${BASE_URL}/api/products`)
-      .then(res => setProducts(res.data));
+      .then(res => setProducts(res.data.products)); // ✅ FIXED LINE
   };
 
   const handleChange = (e) => {
