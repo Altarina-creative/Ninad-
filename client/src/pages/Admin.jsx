@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 export default function Admin() {
   const navigate = useNavigate();
 
+  const BASE_URL = "https://ninad.onrender.com";
+
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -15,7 +17,6 @@ export default function Admin() {
   const [preview, setPreview] = useState("");
   const [products, setProducts] = useState([]);
 
-  // 🔐 Protect
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/admin-login");
@@ -24,7 +25,7 @@ export default function Admin() {
   }, []);
 
   const fetchProducts = () => {
-    axios.get("http://localhost:5000/api/products")
+    axios.get(`${BASE_URL}/api/products`)
       .then(res => setProducts(res.data));
   };
 
@@ -32,7 +33,6 @@ export default function Admin() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 📸 IMAGE UPLOAD
   const handleImage = (e) => {
     const file = e.target.files[0];
 
@@ -45,11 +45,10 @@ export default function Admin() {
     if (file) reader.readAsDataURL(file);
   };
 
-  // ➕ ADD PRODUCT
   const addProduct = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/add-product",
+        `${BASE_URL}/api/add-product`,
         form,
         {
           headers: {
@@ -80,11 +79,10 @@ export default function Admin() {
     }
   };
 
-  // ❌ DELETE
   const deleteProduct = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/product/${id}`,
+        `${BASE_URL}/api/product/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token")
@@ -130,7 +128,6 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
 
-      {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
 
@@ -142,7 +139,6 @@ export default function Admin() {
         </button>
       </div>
 
-      {/* ADD PRODUCT CARD */}
       <div className="bg-white p-6 rounded-xl shadow mb-6">
 
         <h2 className="text-xl font-semibold mb-4">Add Product</h2>
@@ -189,7 +185,6 @@ export default function Admin() {
 
       </div>
 
-      {/* PRODUCT LIST */}
       <div className="grid md:grid-cols-4 gap-6">
 
         {products.map(p => (
