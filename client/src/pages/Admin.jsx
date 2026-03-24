@@ -25,8 +25,8 @@ export default function Admin() {
   }, []);
 
   const fetchProducts = () => {
-    axios.get(`${BASE_URL}/api/products`)
-      .then(res => setProducts(res.data.products)); // ✅ FIXED LINE
+    axios.get(`${BASE_URL}/api/product/products`) // ✅ FIXED
+      .then(res => setProducts(res.data));
   };
 
   const handleChange = (e) => {
@@ -48,7 +48,7 @@ export default function Admin() {
   const addProduct = async () => {
     try {
       await axios.post(
-        `${BASE_URL}/api/add-product`,
+        `${BASE_URL}/api/product/add-product`, // ✅ FIXED
         form,
         {
           headers: {
