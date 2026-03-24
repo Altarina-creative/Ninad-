@@ -1,40 +1,48 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const path = require("path");
 
-// ROUTES
-const contactRoutes = require("./routes/contactRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const productRoutes = require("./routes/productRoutes");
-const adminRoutes = require("./routes/adminRoutes");
-
-// 🔥 NEW ROUTE
-const joinRoutes = require("./routes/joinRoutes");
+dotenv.config();
 
 const app = express();
 
-// CORS
+// Middleware
 app.use(cors());
+app.use(express.json());
 
-app.use(express.json({ limit: "25mb" }));
-app.use(express.urlencoded({ limit: "25mb", extended: true }));
+// Routes import
+const contactRoutes = require("./routes/contactRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const productRoutes = require("./routes/productRoutes");
+const joinRoutes = require("./routes/joinRoutes");
 
-// ROUTES
+// Routes use
 app.use("/api/contact", contactRoutes);
-app.use("/api", orderRoutes);
-app.use("/api", productRoutes);
-app.use("/api", adminRoutes);
-
-// 🔥 ADD THIS
+app.use("/api/order", orderRoutes);
+app.use("/api/product", productRoutes);
 app.use("/api/join", joinRoutes);
 
-// DB CONNECT
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected ✅"))
-  .catch((err) => console.log("DB Error ❌", err));
+// ✅ ROOT ROUTE (fix for "Cannot GET /")
+app.get("/", (req, res) => {
+  res.send("NINAD API is running 🚀");
+});
 
-// ✅ ONLY REQUIRED CHANGE (PORT FIX)
+// ✅ MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected ✅"))
+  .catch((err) => console.log(err));
+
+// ✅ SERVE FRONTEND (VITE → dist folder)
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
+
+// Server start
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
