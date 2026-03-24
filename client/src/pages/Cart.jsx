@@ -54,7 +54,7 @@ export default function Cart() {
     setCart([]);
   };
 
-  // ✅ TOTAL FIX
+  // TOTAL
   const total = cart.reduce(
     (sum, item) => sum + parseFloat(item.price) * item.qty,
     0
@@ -64,7 +64,7 @@ export default function Cart() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ FINAL ORDER FUNCTION WITH STYLISH POPUP
+  // ✅ ONLY FIXED LINE HERE
   const handleOrder = async () => {
     try {
       const fullAddress = `
@@ -75,7 +75,7 @@ export default function Cart() {
         ${form.country} - ${form.pincode}
       `;
 
-      await axios.post("http://localhost:5000/api/order", {
+      await axios.post("https://ninad.onrender.com/api/order", {  // ✅ FIXED (ONLY CHANGE)
         cart,
         total,
         email: form.email,
@@ -91,7 +91,7 @@ export default function Cart() {
         confirmButtonColor: "#6366f1",
         confirmButtonText: "OK"
       }).then(() => {
-        clearCart(); // ✅ popup ke baad clear
+        clearCart();
       });
 
     } catch (err) {
@@ -200,50 +200,50 @@ export default function Cart() {
               <input name="city" placeholder="City" onChange={handleChange} className="input w-1/2" />
 
               <select name="state" onChange={handleChange} className="input w-1/2">
-  <option value="">Select State</option>
+                <option value="">Select State</option>
 
-  <optgroup label="States">
-    <option>Andhra Pradesh</option>
-    <option>Arunachal Pradesh</option>
-    <option>Assam</option>
-    <option>Bihar</option>
-    <option>Chhattisgarh</option>
-    <option>Goa</option>
-    <option>Gujarat</option>
-    <option>Haryana</option>
-    <option>Himachal Pradesh</option>
-    <option>Jharkhand</option>
-    <option>Karnataka</option>
-    <option>Kerala</option>
-    <option>Madhya Pradesh</option>
-    <option>Maharashtra</option>
-    <option>Manipur</option>
-    <option>Meghalaya</option>
-    <option>Mizoram</option>
-    <option>Nagaland</option>
-    <option>Odisha</option>
-    <option>Punjab</option>
-    <option>Rajasthan</option>
-    <option>Sikkim</option>
-    <option>Tamil Nadu</option>
-    <option>Telangana</option>
-    <option>Tripura</option>
-    <option>Uttar Pradesh</option>
-    <option>Uttarakhand</option>
-    <option>West Bengal</option>
-  </optgroup>
+                <optgroup label="States">
+                  <option>Andhra Pradesh</option>
+                  <option>Arunachal Pradesh</option>
+                  <option>Assam</option>
+                  <option>Bihar</option>
+                  <option>Chhattisgarh</option>
+                  <option>Goa</option>
+                  <option>Gujarat</option>
+                  <option>Haryana</option>
+                  <option>Himachal Pradesh</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Madhya Pradesh</option>
+                  <option>Maharashtra</option>
+                  <option>Manipur</option>
+                  <option>Meghalaya</option>
+                  <option>Mizoram</option>
+                  <option>Nagaland</option>
+                  <option>Odisha</option>
+                  <option>Punjab</option>
+                  <option>Rajasthan</option>
+                  <option>Sikkim</option>
+                  <option>Tamil Nadu</option>
+                  <option>Telangana</option>
+                  <option>Tripura</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Uttarakhand</option>
+                  <option>West Bengal</option>
+                </optgroup>
 
-  <optgroup label="Union Territories">
-    <option>Andaman and Nicobar Islands</option>
-    <option>Chandigarh</option>
-    <option>Dadra and Nagar Haveli and Daman and Diu</option>
-    <option>Delhi</option>
-    <option>Jammu and Kashmir</option>
-    <option>Ladakh</option>
-    <option>Lakshadweep</option>
-    <option>Puducherry</option>
-  </optgroup>
-</select>
+                <optgroup label="Union Territories">
+                  <option>Andaman and Nicobar Islands</option>
+                  <option>Chandigarh</option>
+                  <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                  <option>Delhi</option>
+                  <option>Jammu and Kashmir</option>
+                  <option>Ladakh</option>
+                  <option>Lakshadweep</option>
+                  <option>Puducherry</option>
+                </optgroup>
+              </select>
             </div>
 
             <div className="flex gap-2">
