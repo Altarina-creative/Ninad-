@@ -12,37 +12,37 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes import
+// Routes
 const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const productRoutes = require("./routes/productRoutes");
 const joinRoutes = require("./routes/joinRoutes");
 
-// Routes use
 app.use("/api/contact", contactRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/join", joinRoutes);
 
-// ✅ ROOT ROUTE (fix for "Cannot GET /")
+// Root route
 app.get("/", (req, res) => {
   res.send("NINAD API is running 🚀");
 });
 
-// ✅ MongoDB connection
+// MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
   .catch((err) => console.log(err));
 
-// ✅ SERVE FRONTEND (VITE → dist folder)
+// Serve frontend (Vite dist)
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.get("*", (req, res) => {
+// ✅ FIXED for Express v5
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
-// Server start
+// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
