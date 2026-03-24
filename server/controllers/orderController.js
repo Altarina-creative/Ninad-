@@ -1,5 +1,5 @@
 const Order = require("../models/Order");
-const nodemailer = require("nodemailer");
+const SibApiV3Sdk = require("sib-api-v3-sdk");
 
 const createOrder = async (req, res) => {
   try {
@@ -19,28 +19,20 @@ const createOrder = async (req, res) => {
 
     await order.save();
 
-    // 🔥 EMAIL TRY (fail ho to crash na ho)
+    // 🔥 EMAIL TRY (Brevo)
     try {
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,              //  (465 → 587)
-        secure: false,          //  FIX
-        requireTLS: true,       // ADD
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
+      const client = SibApiV3Sdk.ApiClient.instance;
+      const apiKey = client.authentications["api-key"];
+      apiKey.apiKey = process.env.BREVO_API_KEY;
 
-      await transporter.verify();   //
-      console.log("SMTP READY ✅");
+      const tranEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
 
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: process.env.OWNER_EMAIL,
+      await tranEmailApi.sendTransacEmail({
+        sender: { email: process.env.OWNER_EMAIL },
+        to: [{ email: process.env.OWNER_EMAIL }],
         subject: "🛒 New Order Received",
 
-        html: `
+        htmlContent: `
         <div style="font-family: Arial; background:#f4f4f4; padding:20px">
           <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:10px">
             
@@ -76,7 +68,7 @@ const createOrder = async (req, res) => {
         `
       });
 
-      console.log("Email sent ✅");
+      console.log("Email sent via Brevo ✅");
 
     } catch (mailError) {
       console.log("Email failed ❌", mailError.message);
