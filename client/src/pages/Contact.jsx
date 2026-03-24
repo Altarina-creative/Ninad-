@@ -21,7 +21,7 @@ const Contact = () => {
 
     try {
 
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch("https://ninad.onrender.com/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -31,7 +31,6 @@ const Contact = () => {
 
       const data = await res.json();
 
-      // ✅ SUCCESS POPUP
       Swal.fire({
         title: "Message Sent 📩",
         text: data.message || "We will contact you soon!",
@@ -48,7 +47,6 @@ const Contact = () => {
     } catch (error) {
       console.log(error);
 
-      // ❌ ERROR POPUP
       Swal.fire({
         title: "Error ❌",
         text: "Failed to send message!",
@@ -61,7 +59,6 @@ const Contact = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
 
-      {/* HERO SECTION */}
       <section className="bg-[#0f172a] text-white py-16 text-center px-6">
         <h1 className="text-3xl md:text-5xl font-bold mb-4">
           Contact Us
@@ -72,10 +69,8 @@ const Contact = () => {
         </p>
       </section>
 
-      {/* CONTACT SECTION */}
       <section className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12">
 
-        {/* CONTACT INFO */}
         <div className="bg-white shadow-lg rounded-xl p-8">
           <h2 className="text-2xl font-bold text-[#0f172a] mb-6">
             Get In Touch
@@ -85,9 +80,8 @@ const Contact = () => {
             <p>
               📍<span className="font-medium">Location:</span><br />
               Mehalchauri Gairsain, <br />
-               Pin: 246431 , Chamoli <br />
+              Pin: 246431 , Chamoli <br />
               Uttarakhand, India.
-              
             </p>
 
             <p>
@@ -107,7 +101,6 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* CONTACT FORM */}
         <div className="bg-white shadow-lg rounded-xl p-8">
           <h2 className="text-2xl font-bold text-[#0f172a] mb-6">
             Send Message
