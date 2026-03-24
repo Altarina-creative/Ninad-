@@ -129,10 +129,12 @@ const Donate = () => {
                 <span>State Bank of India</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex flex-col md:flex-row md:justify-between">
                 <span className="font-medium">Branch</span>
-                <span>Mehal Chori District-Chamoli Uttarakhand 246431</span>
-              </div>
+                <span className="break-words md:text-right">
+                   Mehal Chori District-Chamoli Uttarakhand 246431
+                </span>
+                 </div>
 
             </div>
           </div>
