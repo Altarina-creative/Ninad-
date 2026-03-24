@@ -23,7 +23,6 @@ export default function Cart() {
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // ✅ FIX ONLY
     const withQty = saved.map((item) => ({
       ...item,
       _id: item._id || item.id,
@@ -81,7 +80,8 @@ export default function Cart() {
         ${form.country} - ${form.pincode}
       `;
 
-await axios.post("https://ninad.onrender.com/api/order/order", {
+      // ✅ ONLY FIXED LINE
+      await axios.post("https://ninad.onrender.com/api/order/order", {
         cart,
         total,
         email: form.email,
