@@ -82,7 +82,8 @@ const Home = () => {
               women empowerment and sustainable livelihoods.
             </p>
 
-            <div className="flex gap-4 flex-wrap">
+            {/* ✅ ONLY CHANGE HERE */}
+            <div className="flex gap-4 flex-wrap justify-center md:justify-start">
 
               <Link to="/about">
                 <button className="bg-[#ff7a00] text-white px-6 py-3 rounded-xl">
@@ -96,11 +97,12 @@ const Home = () => {
                 </button>
               </Link>
 
+              {/* ✅ ONLY CHANGE HERE */}
               <button
                 onClick={() =>
                   document.getElementById("join").scrollIntoView({ behavior: "smooth" })
                 }
-                className="bg-[#1b4332] text-white px-6 py-3 rounded-xl"
+                className="bg-[#1b4332] text-white px-6 py-3 rounded-xl mx-auto md:mx-0"
               >
                 Join Us
               </button>
