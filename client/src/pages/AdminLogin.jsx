@@ -18,7 +18,7 @@ export default function AdminLogin() {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/admin/login",
+        "https://ninad.onrender.com/api/admin/login",
         form
       );
 
@@ -32,7 +32,7 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
 
-      {/* 🌾 LEFT SIDE */}
+      {/* LEFT SIDE */}
       <div className="flex flex-col items-center justify-center md:w-1/2 
                       bg-gradient-to-br from-[#1f3d2b] to-[#2f5d44] px-8 py-12 text-white">
 
@@ -52,13 +52,12 @@ export default function AdminLogin() {
         </p>
       </div>
 
-      {/* 🌿 RIGHT SIDE */}
+      {/* RIGHT SIDE */}
       <div className="flex items-center justify-center md:w-1/2 px-6 py-12 
                       bg-gradient-to-br from-[#3a7d5d] to-[#9fcf9f]">
 
         <div className="w-full max-w-xl">
 
-          {/* GLASS CARD */}
           <div className="backdrop-blur-lg bg-white/10 border border-white/20 
                           rounded-2xl shadow-2xl p-10 md:p-12 text-white">
 
