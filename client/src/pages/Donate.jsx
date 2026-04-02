@@ -1,5 +1,5 @@
 import React from "react";
-import qrImg from "../assets/WhatsApp Image 2024-04-04 at 7.20.32 PM (1).jpeg";
+import qrImg from "../assets/upi.jpeg";
 
 const Donate = () => {
   return (
