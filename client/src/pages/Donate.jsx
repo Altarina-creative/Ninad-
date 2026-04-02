@@ -96,7 +96,7 @@ const Donate = () => {
             <p className="mt-4 text-gray-600">
               UPI ID:{" "}
               <span className="font-semibold text-green-700">
-                yourupi@bank
+                ninaabadlav@sbi
               </span>
             </p>
           </div>
