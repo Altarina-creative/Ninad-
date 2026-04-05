@@ -24,4 +24,5 @@ const loginAdmin = async (req, res) => {
   res.json({ token });
 };
 
+// ✅ VERY IMPORTANT LINE
 module.exports = { loginAdmin };
