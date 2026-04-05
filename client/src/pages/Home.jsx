@@ -15,6 +15,11 @@ import g6 from "../assets/g6.jpeg";
 import g7 from "../assets/g7.jpeg";
 import g8 from "../assets/g8.jpeg";
 
+// ✅ REPORT IMPORT (NEW ADD ONLY)
+import report1 from "../assets/Annual Report 21-22 ninad.pdf";
+import report2 from "../assets/Annual Report 22-23 Ninad.pdf";
+import report3 from "../assets/Annual Report 23-24 Ninad.pdf";
+
 const Home = () => {
 
   const [formData, setFormData] = useState({
@@ -35,7 +40,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-    await axios.post("https://ninad.onrender.com/api/join", formData);
+      await axios.post("http://localhost:5000/api/join", formData);
 
       Swal.fire({
         title: "Success!",
@@ -82,8 +87,7 @@ const Home = () => {
               women empowerment and sustainable livelihoods.
             </p>
 
-            {/* ✅ ONLY CHANGE HERE */}
-            <div className="flex gap-4 flex-wrap justify-center md:justify-start">
+            <div className="flex gap-4 flex-wrap">
 
               <Link to="/about">
                 <button className="bg-[#ff7a00] text-white px-6 py-3 rounded-xl">
@@ -97,12 +101,11 @@ const Home = () => {
                 </button>
               </Link>
 
-              {/* ✅ ONLY CHANGE HERE */}
               <button
                 onClick={() =>
                   document.getElementById("join").scrollIntoView({ behavior: "smooth" })
                 }
-                className="bg-[#1b4332] text-white px-6 py-3 rounded-xl mx-auto md:mx-0"
+                className="bg-[#1b4332] text-white px-6 py-3 rounded-xl"
               >
                 Join Us
               </button>
@@ -263,7 +266,7 @@ const Home = () => {
 
       </section>
 
-      {/* ✅ PREMIUM STYLISH GALLERY */}
+      {/* ✅ GALLERY */}
       <section className="py-20 px-6 bg-[#f3fbf6] text-center">
         <h2 className="text-3xl font-bold mb-10 text-[#1b4332]">
           Gallery
@@ -271,34 +274,34 @@ const Home = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {[g1, g2, g3, g4, g5, g6, g7, g8].map((img, i) => (
-            <div
-              key={i}
-              className="group relative p-[2px] rounded-xl bg-gradient-to-br from-[#ff7a00] via-[#1b4332] to-[#52b788] hover:scale-105 transition duration-300"
-            >
-              <div className="relative overflow-hidden rounded-xl bg-white">
-                
-                <img
-                  src={img}
-                  alt="gallery"
-                  className="w-full h-56 object-cover transform group-hover:scale-110 transition duration-500"
-                />
-
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300"></div>
-
-                <div className="absolute bottom-3 left-3 text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition duration-300">
-                  NINAD Work
-                </div>
-
-              </div>
+            <div key={i}>
+              <img src={img} className="w-full h-56 object-cover rounded-xl" />
             </div>
           ))}
         </div>
+      </section>
 
-        <Link to="/Projects">
-          <button className="mt-8 border border-[#1b4332] text-[#1b4332] px-6 py-2 rounded-lg hover:bg-[#1b4332] hover:text-white transition">
-            View More
-          </button>
-        </Link>
+      {/* ✅ NEW: ANNUAL REPORTS (ONLY ADDED) */}
+      <section className="py-20 px-6 bg-[#edf7f1] text-center">
+        <h2 className="text-3xl font-bold mb-10 text-[#1b4332]">
+          Annual Reports 📊
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+
+          <a href={report1} target="_blank" rel="noreferrer" className="bg-white p-6 rounded-xl shadow hover:shadow-xl">
+            Annual Report 21-22 Ninad
+          </a>
+
+          <a href={report2} target="_blank" rel="noreferrer" className="bg-white p-6 rounded-xl shadow hover:shadow-xl">
+            Annual Report 22-23 Ninad
+          </a>
+
+          <a href={report3} target="_blank" rel="noreferrer" className="bg-white p-6 rounded-xl shadow hover:shadow-xl">
+            Annual Report 23-24 Ninad
+          </a>
+
+        </div>
       </section>
 
       {/* JOIN */}
