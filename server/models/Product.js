@@ -6,12 +6,16 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   price: {
-    type: String, // ✅ ab string hai (100/kg allow)
-    required: true
-  },
-  img: {
     type: String,
     required: true
+  },
+  img: [
+    {
+      type: String
+    }
+  ],
+  discount: {
+    type: String // ✅ ADD THIS ONLY
   }
 }, { timestamps: true });
 
