@@ -22,26 +22,20 @@ export default function Cart() {
   // Load cart
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const withQty = saved.map((item) => ({
-      ...item,
-      _id: item._id || item.id,
-      qty: 1
-    }));
-
+    const withQty = saved.map((item) => ({ ...item, qty: 1 }));
     setCart(withQty);
   }, []);
 
   // Quantity
   const increaseQty = (id) => {
     setCart(cart.map(item =>
-      item._id === id ? { ...item, qty: item.qty + 1 } : item
+      item.id === id ? { ...item, qty: item.qty + 1 } : item
     ));
   };
 
   const decreaseQty = (id) => {
     setCart(cart.map(item =>
-      item._id === id && item.qty > 1
+      item.id === id && item.qty > 1
         ? { ...item, qty: item.qty - 1 }
         : item
     ));
@@ -49,7 +43,7 @@ export default function Cart() {
 
   // Remove
   const removeItem = (id) => {
-    const updated = cart.filter(item => item._id !== id);
+    const updated = cart.filter(item => item.id !== id);
     setCart(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
   };
@@ -60,16 +54,35 @@ export default function Cart() {
     setCart([]);
   };
 
-  // TOTAL
-  const total = cart.reduce(
+  // ✅ ORIGINAL TOTAL
+  const originalTotal = cart.reduce(
     (sum, item) => sum + parseFloat(item.price) * item.qty,
     0
   );
+
+  // ✅ DISCOUNT AMOUNT
+  const discountAmount = cart.reduce((sum, item) => {
+    let price = parseFloat(item.price);
+    let discount = 0;
+
+    if (item.discount) {
+      const match = item.discount.match(/\d+/);
+      if (match) {
+        discount = parseInt(match[0]);
+      }
+    }
+
+    return sum + (price * discount / 100) * item.qty;
+  }, 0);
+
+  // ✅ FINAL TOTAL
+  const total = originalTotal - discountAmount;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // ORDER
   const handleOrder = async () => {
     try {
       const fullAddress = `
@@ -80,8 +93,7 @@ export default function Cart() {
         ${form.country} - ${form.pincode}
       `;
 
-      // ✅ ONLY FIXED LINE
-      await axios.post("https://ninad.onrender.com/api/order/order", {
+      await axios.post("http://localhost:5000/api/order", {
         cart,
         total,
         email: form.email,
@@ -115,6 +127,7 @@ export default function Cart() {
   return (
     <div className="bg-gray-100 min-h-screen">
 
+      {/* HEADER */}
       <div className="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-50">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate("/products")} className="text-xl font-bold">
@@ -130,6 +143,7 @@ export default function Cart() {
 
       <div className="p-6 grid md:grid-cols-3 gap-6">
 
+        {/* LEFT */}
         <div className="md:col-span-2 space-y-4">
           {cart.length === 0 ? (
             <div className="bg-white p-6 rounded-xl text-center shadow">
@@ -143,25 +157,31 @@ export default function Cart() {
             </div>
           ) : (
             cart.map(item => (
-              <div key={item._id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
+              <div key={item.id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
                 <div className="flex gap-4 items-center">
                   <img
-                    src={item.img || "https://via.placeholder.com/100"}
+                    src={item.img?.[0] || item.img || "https://via.placeholder.com/100"}
                     className="w-20 h-20 rounded-lg object-cover"
                   />
                   <div>
                     <h2 className="font-semibold">{item.name}</h2>
                     <p className="text-green-600">₹{item.price}</p>
 
+                    {item.discount && (
+                      <p className="text-red-500 text-sm font-semibold">
+                        🔥 {item.discount}
+                      </p>
+                    )}
+
                     <div className="flex gap-3 mt-2">
-                      <button onClick={() => decreaseQty(item._id)} className="px-2 bg-gray-200">-</button>
+                      <button onClick={() => decreaseQty(item.id)} className="px-2 bg-gray-200">-</button>
                       <span>{item.qty}</span>
-                      <button onClick={() => increaseQty(item._id)} className="px-2 bg-gray-200">+</button>
+                      <button onClick={() => increaseQty(item.id)} className="px-2 bg-gray-200">+</button>
                     </div>
                   </div>
                 </div>
 
-                <button onClick={() => removeItem(item._id)} className="text-red-500">
+                <button onClick={() => removeItem(item.id)} className="text-red-500">
                   Remove
                 </button>
               </div>
@@ -169,6 +189,7 @@ export default function Cart() {
           )}
         </div>
 
+        {/* RIGHT */}
         <div className="bg-white p-5 rounded-xl shadow sticky top-5 h-fit">
           <h2 className="text-xl font-bold mb-4">Price Details</h2>
 
@@ -178,8 +199,13 @@ export default function Cart() {
           </div>
 
           <div className="flex justify-between">
-            <span>Total</span>
-            <span>₹{total}</span>
+            <span>Total Price</span>
+            <span>₹{originalTotal}</span>
+          </div>
+
+          <div className="flex justify-between text-red-500 font-semibold">
+            <span>Discount</span>
+            <span>- ₹{discountAmount}</span>
           </div>
 
           <hr className="my-3" />
@@ -189,6 +215,7 @@ export default function Cart() {
             <span>₹{total}</span>
           </div>
 
+          {/* FORM */}
           <div className="mt-4">
             <h2 className="font-semibold mb-3">Delivery Details</h2>
 
