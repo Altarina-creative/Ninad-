@@ -3,16 +3,17 @@ const Product = require("../models/Product");
 // ADD PRODUCT
 const addProduct = async (req, res) => {
   try {
-    const { name, price, img } = req.body;
+    const { name, price, img, discount } = req.body;
 
-    if (!name || !price || !img) {
-      return res.status(400).json({ msg: "All fields required ❌" });
+    if (!name || !price || !img || img.length === 0) {
+      return res.status(400).json({ msg: "At least 1 image required ❌" });
     }
 
     const product = new Product({
       name,
-      price, // ✅ string directly store hoga
-      img
+      price,
+      img,
+      discount // ✅ ADD
     });
 
     await product.save();
