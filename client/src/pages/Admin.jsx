@@ -6,26 +6,24 @@ import Swal from "sweetalert2";
 export default function Admin() {
   const navigate = useNavigate();
 
-  const BASE_URL = "https://ninad.onrender.com";
-
   const [form, setForm] = useState({
     name: "",
     price: "",
-    img: ""
+    img: [],
+    discount: "" // ✅ NEW
   });
 
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState([]);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/admin-login");
-
     fetchProducts();
   }, []);
 
   const fetchProducts = () => {
-    axios.get(`${BASE_URL}/api/product/products`) // ✅ FIXED
+    axios.get("http://localhost:5000/api/products")
       .then(res => setProducts(res.data));
   };
 
@@ -33,96 +31,59 @@ export default function Admin() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImage = (e) => {
-    const file = e.target.files[0];
+  const handleImage = async (e) => {
+    const files = Array.from(e.target.files);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-      setForm({ ...form, img: reader.result });
-    };
+    const promises = files.map(file => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    });
 
-    if (file) reader.readAsDataURL(file);
+    const newImages = await Promise.all(promises);
+
+    let updatedImages = [...form.img, ...newImages];
+    if (updatedImages.length > 5) {
+      updatedImages = updatedImages.slice(0, 5);
+    }
+
+    setForm({ ...form, img: updatedImages });
+    setPreview(updatedImages);
   };
 
   const addProduct = async () => {
-    try {
-      await axios.post(
-        `${BASE_URL}/api/product/add-product`, // ✅ FIXED
-        form,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token")
-          }
-        }
-      );
+    if (form.img.length === 0) {
+      return Swal.fire("Error ❌", "Upload at least 1 image", "error");
+    }
 
-      Swal.fire({
-        title: "Product Added ✅",
-        text: "New product added successfully!",
-        icon: "success",
-        confirmButtonColor: "#6366f1"
+    try {
+      await axios.post("http://localhost:5000/api/add-product", form, {
+        headers: { Authorization: localStorage.getItem("token") }
       });
 
-      setForm({ name: "", price: "", img: "" });
-      setPreview("");
+      Swal.fire("Product Added ✅", "Success", "success");
 
+      setForm({ name: "", price: "", img: [], discount: "" });
+      setPreview([]);
       fetchProducts();
 
     } catch (err) {
-      Swal.fire({
-        title: "Error ❌",
-        text: "Failed to add product!",
-        icon: "error",
-        confirmButtonColor: "#ef4444"
-      });
+      Swal.fire("Error ❌", "Failed to add product", "error");
     }
   };
 
   const deleteProduct = async (id) => {
-    try {
-      await axios.delete(
-        `${BASE_URL}/api/product/${id}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token")
-          }
-        }
-      );
-
-      Swal.fire({
-        title: "Deleted 🗑️",
-        text: "Product removed successfully!",
-        icon: "success",
-        confirmButtonColor: "#ef4444"
-      });
-
-      fetchProducts();
-
-    } catch (err) {
-      Swal.fire({
-        title: "Error ❌",
-        text: "Failed to delete product!",
-        icon: "error"
-      });
-    }
+    await axios.delete(`http://localhost:5000/api/product/${id}`, {
+      headers: { Authorization: localStorage.getItem("token") }
+    });
+    fetchProducts();
   };
 
   const logout = () => {
-    Swal.fire({
-      title: "Logout?",
-      text: "Are you sure you want to logout?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#6366f1",
-      cancelButtonColor: "#ef4444",
-      confirmButtonText: "Yes"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        navigate("/admin-login");
-      }
-    });
+    localStorage.removeItem("token");
+    navigate("/admin-login");
   };
 
   return (
@@ -130,11 +91,7 @@ export default function Admin() {
 
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-
-        <button
-          onClick={logout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg"
-        >
+        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded-lg">
           Logout
         </button>
       </div>
@@ -155,26 +112,34 @@ export default function Admin() {
 
           <input
             name="price"
-            placeholder="Price (e.g. 200/kg)"
+            placeholder="Price"
             value={form.price}
+            onChange={handleChange}
+            className="input"
+          />
+
+          {/* ✅ DISCOUNT FIELD */}
+          <input
+            name="discount"
+            placeholder="Discount (optional e.g. 20% OFF)"
+            value={form.discount}
             onChange={handleChange}
             className="input"
           />
 
           <input
             type="file"
+            multiple
             onChange={handleImage}
             className="input"
           />
-
         </div>
 
-        {preview && (
-          <img
-            src={preview}
-            className="h-32 mt-4 rounded-lg object-cover"
-          />
-        )}
+        <div className="flex gap-2 mt-4 flex-wrap">
+          {preview.map((img, i) => (
+            <img key={i} src={img} className="h-20 w-20 object-cover rounded" />
+          ))}
+        </div>
 
         <button
           onClick={addProduct}
@@ -182,18 +147,13 @@ export default function Admin() {
         >
           Add Product
         </button>
-
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-
         {products.map(p => (
           <div key={p._id} className="bg-white rounded-xl shadow p-4">
 
-            <img
-              src={p.img}
-              className="h-40 w-full object-cover rounded-lg"
-            />
+            <img src={p.img[0]} className="h-40 w-full object-cover rounded-lg" />
 
             <h2 className="mt-2 font-semibold">{p.name}</h2>
             <p className="text-green-600">₹{p.price}</p>
@@ -204,10 +164,8 @@ export default function Admin() {
             >
               Delete
             </button>
-
           </div>
         ))}
-
       </div>
     </div>
   );
