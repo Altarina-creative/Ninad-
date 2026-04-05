@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const BASE_URL = "https://ninad.onrender.com"; // ✅ ADD
+const BASE_URL = "https://ninad.onrender.com";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function Admin() {
     name: "",
     price: "",
     img: [],
-    discount: "" // ✅ NEW
+    discount: ""
   });
 
   const [preview, setPreview] = useState([]);
@@ -24,9 +24,14 @@ export default function Admin() {
     fetchProducts();
   }, []);
 
+  // ✅ FIX 1 (yaha change kiya hai)
   const fetchProducts = () => {
-    axios.get(`${BASE_URL}/api/products`) // ✅ CHANGE
-      .then(res => setProducts(res.data));
+    axios.get(`${BASE_URL}/api/products`)
+      .then(res => {
+        console.log("API DATA:", res.data);
+        setProducts(res.data.products || res.data); // 👈 FIX
+      })
+      .catch(() => setProducts([]));
   };
 
   const handleChange = (e) => {
@@ -61,7 +66,7 @@ export default function Admin() {
     }
 
     try {
-      await axios.post(`${BASE_URL}/api/add-product`, form, { // ✅ CHANGE
+      await axios.post(`${BASE_URL}/api/add-product`, form, {
         headers: { Authorization: localStorage.getItem("token") }
       });
 
@@ -77,7 +82,7 @@ export default function Admin() {
   };
 
   const deleteProduct = async (id) => {
-    await axios.delete(`${BASE_URL}/api/product/${id}`, { // ✅ CHANGE
+    await axios.delete(`${BASE_URL}/api/product/${id}`, {
       headers: { Authorization: localStorage.getItem("token") }
     });
     fetchProducts();
@@ -120,7 +125,6 @@ export default function Admin() {
             className="input"
           />
 
-          {/* ✅ DISCOUNT FIELD */}
           <input
             name="discount"
             placeholder="Discount (optional e.g. 20% OFF)"
@@ -152,7 +156,8 @@ export default function Admin() {
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-        {products.map(p => (
+        {/* ✅ FIX 2 (safe map lagaya hai) */}
+        {Array.isArray(products) && products.map(p => (
           <div key={p._id} className="bg-white rounded-xl shadow p-4">
 
             <img src={p.img[0]} className="h-40 w-full object-cover rounded-lg" />
