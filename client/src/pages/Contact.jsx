@@ -79,7 +79,7 @@ const Contact = () => {
           <div className="space-y-5 text-gray-600">
             <p>
               📍<span className="font-medium">Location:</span><br />
-              Mehalchauri Gairsain, <br />
+              Gairsain, <br />
               Pin: 246431 , Chamoli <br />
               Uttarakhand, India.
             </p>
