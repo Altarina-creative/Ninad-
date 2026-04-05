@@ -62,7 +62,7 @@ const Footer = () => {
             <div className="flex items-start justify-center sm:justify-start gap-2">
               <span>📍</span>
               <p>
-                MehalChori, District Chamoli,<br />
+                Gairsain, District Chamoli,<br />
                 Uttarakhand - 246431
               </p>
             </div>
