@@ -7,6 +7,10 @@ export default function Cart() {
   const navigate = useNavigate();
 
   const [cart, setCart] = useState([]);
+
+  // ✅ ADD ONLY (IMAGE ZOOM)
+  const [zoomImg, setZoomImg] = useState(null);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -93,7 +97,7 @@ export default function Cart() {
         ${form.country} - ${form.pincode}
       `;
 
-      await axios.post("http://localhost:5000/api/order", {
+      await axios.post("https://ninad.onrender.com/api/order", {
         cart,
         total,
         email: form.email,
@@ -159,10 +163,14 @@ export default function Cart() {
             cart.map(item => (
               <div key={item.id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
                 <div className="flex gap-4 items-center">
+                  
+                  {/* ✅ ONLY ADD: CLICK TO ZOOM */}
                   <img
                     src={item.img?.[0] || item.img || "https://via.placeholder.com/100"}
-                    className="w-20 h-20 rounded-lg object-cover"
+                    className="w-20 h-20 rounded-lg object-cover cursor-pointer"
+                    onClick={() => setZoomImg(item.img?.[0] || item.img)}
                   />
+
                   <div>
                     <h2 className="font-semibold">{item.name}</h2>
                     <p className="text-green-600">₹{item.price}</p>
@@ -293,6 +301,17 @@ export default function Cart() {
           </button>
         </div>
       </div>
+
+      {/* ✅ ADD ONLY: IMAGE ZOOM */}
+      {zoomImg && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          onClick={() => setZoomImg(null)}
+        >
+          <img src={zoomImg} className="max-h-[90%] max-w-[90%] rounded-lg" />
+        </div>
+      )}
+
     </div>
   );
 }
