@@ -19,6 +19,7 @@ import g8 from "../assets/g8.jpeg";
 import report1 from "../assets/Annual Report 21-22 ninad.pdf";
 import report2 from "../assets/Annual Report 22-23 Ninad.pdf";
 import report3 from "../assets/Annual Report 23-24 Ninad.pdf";
+const BASE_URL = "https://ninad.onrender.com";
 
 const Home = () => {
 
@@ -40,8 +41,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/join", formData);
-
+await axios.post(`${BASE_URL}/api/join`, formData);
       Swal.fire({
         title: "Success!",
         text: "You have joined successfully 🎉",
