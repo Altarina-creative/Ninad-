@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// ✅ BASE URL ADD
+const BASE_URL = "https://ninad.onrender.com";
+
 export default function Product() {
   const navigate = useNavigate();
 
@@ -13,7 +16,7 @@ export default function Product() {
   const [zoomImg, setZoomImg] = useState(null);
 
  useEffect(() => {
-  axios.get("https://ninad.onrender.com/api/products")
+  axios.get(`${BASE_URL}/api/products`)   // ✅ ONLY CHANGE HERE
     .then(res => {
       setProducts(res.data);
       console.log(res.data);
