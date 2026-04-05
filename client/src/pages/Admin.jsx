@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+const BASE_URL = "https://ninad.onrender.com"; // ✅ ADD
+
 export default function Admin() {
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ export default function Admin() {
   }, []);
 
   const fetchProducts = () => {
-    axios.get("http://localhost:5000/api/products")
+    axios.get(`${BASE_URL}/api/products`) // ✅ CHANGE
       .then(res => setProducts(res.data));
   };
 
@@ -59,7 +61,7 @@ export default function Admin() {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/add-product", form, {
+      await axios.post(`${BASE_URL}/api/add-product`, form, { // ✅ CHANGE
         headers: { Authorization: localStorage.getItem("token") }
       });
 
@@ -75,7 +77,7 @@ export default function Admin() {
   };
 
   const deleteProduct = async (id) => {
-    await axios.delete(`http://localhost:5000/api/product/${id}`, {
+    await axios.delete(`${BASE_URL}/api/product/${id}`, { // ✅ CHANGE
       headers: { Authorization: localStorage.getItem("token") }
     });
     fetchProducts();
