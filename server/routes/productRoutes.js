@@ -9,11 +9,9 @@ const {
 
 const auth = require("../middleware/authMiddleware");
 
-// PUBLIC
+// ✅ SAME NAMING EVERYWHERE
 router.get("/products", getProducts);
-
-// 🔐 PROTECTED
-router.post("/add-product", auth, addProduct);
-router.delete("/product/:id", auth, deleteProduct);
+router.post("/products", auth, addProduct);
+router.delete("/products/:id", auth, deleteProduct);
 
 module.exports = router;
