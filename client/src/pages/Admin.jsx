@@ -64,10 +64,11 @@ export default function Admin() {
       return Swal.fire("Error ❌", "Upload at least 1 image", "error");
     }
 
-    console.log("FORM DATA:", form); // ✅ DEBUG
+    console.log("FORM DATA:", form);
 
     try {
-      await axios.post(`${BASE_URL}/api/products`, form, {
+      // ✅ FIX ONLY HERE (API CHANGE)
+      await axios.post(`${BASE_URL}/api/add-product`, form, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
 
@@ -78,7 +79,7 @@ export default function Admin() {
       fetchProducts();
 
     } catch (err) {
-      console.log("ERROR:", err.response?.data); // ✅ DEBUG
+      console.log("ERROR:", err.response?.data);
       Swal.fire("Error ❌", "Failed to add product", "error");
     }
   };
