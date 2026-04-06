@@ -10,8 +10,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(express.json({ limit: "50mb" })); // ✅ FIX
+app.use(express.urlencoded({ limit: "50mb", extended: true })); // ✅ FIX
 
 // Routes
 const contactRoutes = require("./routes/contactRoutes");
@@ -22,7 +22,7 @@ const joinRoutes = require("./routes/joinRoutes");
 app.use("/api/contact", contactRoutes);
 app.use("/api/order", orderRoutes);
 
-// ✅ FIX (sirf yahi change hai)
+// ✅ FIX (IMPORTANT)
 app.use("/api", productRoutes);
 
 app.use("/api/join", joinRoutes);
