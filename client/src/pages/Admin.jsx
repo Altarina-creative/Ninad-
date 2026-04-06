@@ -59,18 +59,20 @@ export default function Admin() {
     setPreview(updatedImages);
   };
 
+  // ✅ FIXED (API ROUTE CORRECT)
   const addProduct = async () => {
     if (form.img.length === 0) {
       return Swal.fire("Error ❌", "Upload at least 1 image", "error");
     }
 
-    console.log("FORM DATA:", form);
-
     try {
-      // ✅ FIX ONLY HERE (API CHANGE)
-      await axios.post(`${BASE_URL}/api/add-product`, form, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      const res = await axios.post(`${BASE_URL}/api/products`, form, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
       });
+
+      console.log("SERVER RESPONSE:", res.data);
 
       Swal.fire("Product Added ✅", "Success", "success");
 
@@ -84,11 +86,19 @@ export default function Admin() {
     }
   };
 
+  // ✅ FIXED (DELETE ROUTE CORRECT)
   const deleteProduct = async (id) => {
-    await axios.delete(`${BASE_URL}/api/product/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    });
-    fetchProducts();
+    try {
+      await axios.delete(`${BASE_URL}/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      fetchProducts();
+    } catch (err) {
+      console.log("DELETE ERROR:", err.response?.data);
+    }
   };
 
   const logout = () => {
@@ -176,6 +186,7 @@ export default function Admin() {
           </div>
         ))}
       </div>
+
     </div>
   );
 }
