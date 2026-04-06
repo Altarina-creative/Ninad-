@@ -64,9 +64,11 @@ export default function Admin() {
       return Swal.fire("Error ❌", "Upload at least 1 image", "error");
     }
 
+    console.log("FORM DATA:", form); // ✅ DEBUG
+
     try {
-      await axios.post(`${BASE_URL}/api/products`, form, {   // ✅ FIX
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } // ✅ FIX
+      await axios.post(`${BASE_URL}/api/products`, form, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
 
       Swal.fire("Product Added ✅", "Success", "success");
@@ -76,13 +78,14 @@ export default function Admin() {
       fetchProducts();
 
     } catch (err) {
+      console.log("ERROR:", err.response?.data); // ✅ DEBUG
       Swal.fire("Error ❌", "Failed to add product", "error");
     }
   };
 
   const deleteProduct = async (id) => {
     await axios.delete(`${BASE_URL}/api/product/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } // ✅ FIX
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
     fetchProducts();
   };
