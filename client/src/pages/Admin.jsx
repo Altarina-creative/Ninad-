@@ -24,12 +24,11 @@ export default function Admin() {
     fetchProducts();
   }, []);
 
-  // ✅ FIX 1 (yaha change kiya hai)
   const fetchProducts = () => {
     axios.get(`${BASE_URL}/api/products`)
       .then(res => {
         console.log("API DATA:", res.data);
-        setProducts(res.data.products || res.data); // 👈 FIX
+        setProducts(res.data.products || res.data);
       })
       .catch(() => setProducts([]));
   };
@@ -66,8 +65,8 @@ export default function Admin() {
     }
 
     try {
-      await axios.post(`${BASE_URL}/api/add-product`, form, {
-        headers: { Authorization: localStorage.getItem("token") }
+      await axios.post(`${BASE_URL}/api/products`, form, {   // ✅ FIX
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } // ✅ FIX
       });
 
       Swal.fire("Product Added ✅", "Success", "success");
@@ -83,7 +82,7 @@ export default function Admin() {
 
   const deleteProduct = async (id) => {
     await axios.delete(`${BASE_URL}/api/product/${id}`, {
-      headers: { Authorization: localStorage.getItem("token") }
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } // ✅ FIX
     });
     fetchProducts();
   };
@@ -156,7 +155,6 @@ export default function Admin() {
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-        {/* ✅ FIX 2 (safe map lagaya hai) */}
         {Array.isArray(products) && products.map(p => (
           <div key={p._id} className="bg-white rounded-xl shadow p-4">
 
