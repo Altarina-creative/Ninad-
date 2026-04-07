@@ -22,7 +22,15 @@ export default function AdminLogin() {
         form
       );
 
+      // ✅ DEBUG (added)
+      console.log("LOGIN RESPONSE:", res.data);
+
+      // ✅ TOKEN SAVE (already tha - untouched)
       localStorage.setItem("token", res.data.token);
+
+      // ✅ DEBUG CHECK (added)
+      console.log("TOKEN SAVED:", localStorage.getItem("token"));
+
       navigate("/admin");
     } catch {
       alert("Invalid Credentials ❌");
