@@ -15,31 +15,28 @@ export default function AdminLogin() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // ✅ FIXED FUNCTION (duplicate hata diya + navigate remove)
   const handleLogin = async () => {
     try {
-      const handleLogin = async () => {
-  try {
-    const res = await axios.post(
-      "https://ninad.onrender.com/api/admin/login",
-      form
-    );
+      const res = await axios.post(
+        "https://ninad.onrender.com/api/admin/login",
+        form
+      );
 
-    console.log("LOGIN RESPONSE:", res.data);
+      console.log("LOGIN RESPONSE:", res.data);
 
-    localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.data.token);
 
-    console.log("TOKEN SAVED:", localStorage.getItem("token"));
+      console.log("TOKEN SAVED:", localStorage.getItem("token"));
 
-    // ✅ delay added
-    setTimeout(() => {
-      navigate("/admin");
-    }, 1000);
+      // ❌ navigate remove as you said
+      // navigate("/admin");
 
-  } catch (err) {
-    console.log("LOGIN ERROR:", err);
-    alert("Invalid Credentials ❌");
-  }
-};
+    } catch (err) {
+      console.log("LOGIN ERROR:", err);
+      alert("Invalid Credentials ❌");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
