@@ -5,8 +5,8 @@ const addProduct = async (req, res) => {
   try {
     const { name, price, img, discount } = req.body;
 
-    // ✅ FIX (sirf yahi change hai)
-    if (!name || !price || !Array.isArray(img) || img.length === 0) {
+    // ✅ FIX (Array check remove)
+    if (!name || !price || !img || img.length === 0) {
       return res.status(400).json({ msg: "At least 1 image required ❌" });
     }
 
@@ -14,7 +14,7 @@ const addProduct = async (req, res) => {
       name,
       price,
       img,
-      discount // ✅ ADD
+      discount // ✅ SAME
     });
 
     await product.save();
