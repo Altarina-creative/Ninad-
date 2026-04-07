@@ -7,7 +7,7 @@ const {
   deleteProduct
 } = require("../controllers/productController");
 
-const auth = require("../middleware/authMiddleware");
+//const auth = require("../middleware/authMiddleware");
 
 // ✅ SAME NAMING EVERYWHERE
 router.get("/products", getProducts);
