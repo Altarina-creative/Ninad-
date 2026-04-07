@@ -7,11 +7,15 @@ const {
   deleteProduct
 } = require("../controllers/productController");
 
-//const auth = require("../middleware/authMiddleware");
+// const auth = require("../middleware/authMiddleware"); // ❌ COMMENTED
 
 // ✅ SAME NAMING EVERYWHERE
 router.get("/products", getProducts);
-router.post("/products", auth, addProduct);
-router.delete("/products/:id", auth, deleteProduct);
+
+// ❌ auth COMMENTED (TEMP FIX)
+router.post("/products", /* auth, */ addProduct);
+
+// ❌ auth COMMENTED (TEMP FIX)
+router.delete("/products/:id", /* auth, */ deleteProduct);
 
 module.exports = router;
