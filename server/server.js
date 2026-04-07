@@ -19,11 +19,17 @@ const orderRoutes = require("./routes/orderRoutes");
 const productRoutes = require("./routes/productRoutes");
 const joinRoutes = require("./routes/joinRoutes");
 
+// ✅ ADD THIS (ADMIN ROUTE FIX)
+const adminRoutes = require("./routes/adminRoutes");
+
 app.use("/api/contact", contactRoutes);
 app.use("/api/order", orderRoutes);
 
 // ✅ FIX (IMPORTANT)
 app.use("/api", productRoutes);
+
+// ✅ ADD THIS (ADMIN ROUTE REGISTER)
+app.use("/api", adminRoutes);
 
 app.use("/api/join", joinRoutes);
 
