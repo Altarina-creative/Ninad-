@@ -5,21 +5,22 @@ const addProduct = async (req, res) => {
   try {
     const { name, price, img, discount } = req.body;
 
-    // ✅ FIX (sirf yahi change hai)
-    if (!name || !price || !Array.isArray(img) || img.length === 0) {
-      return res.status(400).json({ msg: "At least 1 image required ❌" });
+    // ✅ FIX (validation simplified)
+    if (!name || !price) {
+      return res.status(400).json({ msg: "Name & Price required ❌" });
     }
 
     const product = new Product({
       name,
       price,
-      img,
-      discount // ✅ ADD
+      img: img || [],            // ✅ FIX (safe fallback)
+      discount: discount || ""   // ✅ FIX (safe fallback)
     });
 
     await product.save();
 
-    res.json({ message: "Product Added ✅" });
+    // ✅ FIX (return product also)
+    res.json({ message: "Product Added ✅", product });
 
   } catch (err) {
     console.log(err);
@@ -30,7 +31,9 @@ const addProduct = async (req, res) => {
 // GET PRODUCTS
 const getProducts = async (req, res) => {
   const products = await Product.find();
-  res.json(products);
+
+  // ✅ FIX (consistent response)
+  res.json({ products });
 };
 
 // DELETE PRODUCT
