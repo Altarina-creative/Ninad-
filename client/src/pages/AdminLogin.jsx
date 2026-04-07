@@ -15,11 +15,10 @@ export default function AdminLogin() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ FIXED FUNCTION (duplicate hata diya + navigate remove)
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "https://ninad.onrender.com/api/admin/login",
+        "https://ninad.onrender.com/api/login",   // ✅ FIX (URL CHANGE)
         form
       );
 
@@ -29,8 +28,7 @@ export default function AdminLogin() {
 
       console.log("TOKEN SAVED:", localStorage.getItem("token"));
 
-      // ❌ navigate remove as you said
-      // navigate("/admin");
+      navigate("/admin");   // ✅ FIX (navigate वापस add)
 
     } catch (err) {
       console.log("LOGIN ERROR:", err);
