@@ -28,7 +28,9 @@ export default function Admin() {
     axios.get(`${BASE_URL}/api/products`)
       .then(res => {
         console.log("API DATA:", res.data);
-        setProducts(res.data.products || res.data);
+
+        // ✅ FIX (consistent response)
+        setProducts(res.data.products);
       })
       .catch(() => setProducts([]));
   };
@@ -59,18 +61,13 @@ export default function Admin() {
     setPreview(updatedImages);
   };
 
-  // ✅ SAME CODE (ONLY HEADER COMMENTED)
   const addProduct = async () => {
     if (form.img.length === 0) {
       return Swal.fire("Error ❌", "Upload at least 1 image", "error");
     }
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/products`, form, {
-        // headers: {
-        //   Authorization: `Bearer ${localStorage.getItem("token")}`
-        // }
-      });
+      const res = await axios.post(`${BASE_URL}/api/products`, form);
 
       console.log("SERVER RESPONSE:", res.data);
 
@@ -86,15 +83,9 @@ export default function Admin() {
     }
   };
 
-  // ✅ SAME CODE (ONLY HEADER COMMENTED)
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`${BASE_URL}/api/products/${id}`, {
-        // headers: {
-        //   Authorization: `Bearer ${localStorage.getItem("token")}`
-        // }
-      });
-
+      await axios.delete(`${BASE_URL}/api/products/${id}`);
       fetchProducts();
     } catch (err) {
       console.log("DELETE ERROR:", err.response?.data);
