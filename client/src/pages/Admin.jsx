@@ -59,7 +59,7 @@ export default function Admin() {
     setPreview(updatedImages);
   };
 
-  // ✅ FIXED (API ROUTE CORRECT)
+  // ✅ SAME CODE (ONLY HEADER COMMENTED)
   const addProduct = async () => {
     if (form.img.length === 0) {
       return Swal.fire("Error ❌", "Upload at least 1 image", "error");
@@ -67,9 +67,9 @@ export default function Admin() {
 
     try {
       const res = await axios.post(`${BASE_URL}/api/products`, form, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+        // headers: {
+        //   Authorization: `Bearer ${localStorage.getItem("token")}`
+        // }
       });
 
       console.log("SERVER RESPONSE:", res.data);
@@ -86,13 +86,13 @@ export default function Admin() {
     }
   };
 
-  // ✅ FIXED (DELETE ROUTE CORRECT)
+  // ✅ SAME CODE (ONLY HEADER COMMENTED)
   const deleteProduct = async (id) => {
     try {
       await axios.delete(`${BASE_URL}/api/products/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+        // headers: {
+        //   Authorization: `Bearer ${localStorage.getItem("token")}`
+        // }
       });
 
       fetchProducts();
