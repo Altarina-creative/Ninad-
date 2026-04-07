@@ -16,9 +16,11 @@ export default function Product() {
   const [zoomImg, setZoomImg] = useState(null);
 
  useEffect(() => {
-  axios.get(`${BASE_URL}/api/products`)   // ✅ ONLY CHANGE HERE
+  axios.get(`${BASE_URL}/api/products`)
     .then(res => {
-      setProducts(res.data);
+      // ✅ FIX (IMPORTANT)
+      setProducts(res.data.products);
+
       console.log(res.data);
     })
     .catch(err => console.log(err));
@@ -88,7 +90,6 @@ export default function Product() {
                 const width = e.currentTarget.clientWidth;
                 const clickX = e.nativeEvent.offsetX;
 
-                // 👉 RIGHT CLICK → NEXT
                 if (clickX > width / 2) {
                   setCurrentImg(prev => ({
                     ...prev,
@@ -98,7 +99,6 @@ export default function Product() {
                         : (prev[p._id] || 0) + 1
                   }));
                 } 
-                // 👉 LEFT CLICK → PREV
                 else {
                   setCurrentImg(prev => ({
                     ...prev,
@@ -111,14 +111,12 @@ export default function Product() {
               }}
             >
 
-              {/* DISCOUNT BADGE */}
               {p.discount && (
                 <div className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-sm px-4 py-1 rounded-full shadow-lg font-bold">
                   🔥 {p.discount}
                 </div>
               )}
 
-              {/* 🔍 CLICK IMAGE TO ZOOM */}
               <img
                 src={p.img[currentImg[p._id] || 0]}
                 alt={p.name}
@@ -128,7 +126,6 @@ export default function Product() {
                 className="w-full h-auto max-h-72 object-contain transition duration-500"
               />
 
-              {/* DOTS */}
               <div className="flex gap-2 mt-3">
                 {p.img.map((_, i) => (
                   <div
@@ -144,13 +141,11 @@ export default function Product() {
 
             </div>
 
-            {/* CONTENT */}
             <div className="p-4">
               <h2 className="font-semibold text-lg text-gray-800">
                 {p.name}
               </h2>
 
-              {/* PRICE + DISCOUNT SIDE BY SIDE */}
               <div className="flex justify-between items-center mt-2">
 
                 <p className="text-2xl font-extrabold text-green-600">
@@ -186,7 +181,6 @@ export default function Product() {
         ))}
       </div>
 
-      {/* CART BUTTON */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => navigate("/cart")}
@@ -196,7 +190,6 @@ export default function Product() {
         </button>
       </div>
 
-      {/* 🔍 ZOOM MODAL */}
       {zoomImg && (
         <div
           onClick={() => setZoomImg(null)}
