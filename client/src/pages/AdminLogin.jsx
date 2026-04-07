@@ -17,25 +17,29 @@ export default function AdminLogin() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
-        "https://ninad.onrender.com/api/admin/login",
-        form
-      );
+      const handleLogin = async () => {
+  try {
+    const res = await axios.post(
+      "https://ninad.onrender.com/api/admin/login",
+      form
+    );
 
-      // ✅ DEBUG (added)
-      console.log("LOGIN RESPONSE:", res.data);
+    console.log("LOGIN RESPONSE:", res.data);
 
-      // ✅ TOKEN SAVE (already tha - untouched)
-      localStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", res.data.token);
 
-      // ✅ DEBUG CHECK (added)
-      console.log("TOKEN SAVED:", localStorage.getItem("token"));
+    console.log("TOKEN SAVED:", localStorage.getItem("token"));
 
+    // ✅ delay added
+    setTimeout(() => {
       navigate("/admin");
-    } catch {
-      alert("Invalid Credentials ❌");
-    }
-  };
+    }, 1000);
+
+  } catch (err) {
+    console.log("LOGIN ERROR:", err);
+    alert("Invalid Credentials ❌");
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
