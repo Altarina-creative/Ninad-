@@ -76,7 +76,7 @@ export default function Cart() {
       }
     }
 
-    return sum + (price * discount / 100) * item.qty;
+return sum + Math.round((price * discount / 100) * item.qty);
   }, 0);
 
   // ✅ FINAL TOTAL
