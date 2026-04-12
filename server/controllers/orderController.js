@@ -3,7 +3,8 @@ const SibApiV3Sdk = require("sib-api-v3-sdk");
 
 const createOrder = async (req, res) => {
   try {
-    const { cart, total, email, address, phone, pincode } = req.body;
+    // ✅ ADD name here (ONLY CHANGE)
+    const { cart, total, name, email, address, phone, pincode } = req.body;
 
     const safeTotal = isNaN(total) ? 0 : total;
 
@@ -17,6 +18,9 @@ const createOrder = async (req, res) => {
           }))
         : [],
       total: safeTotal,
+
+      name, // ✅ ADD THIS (ONLY CHANGE)
+
       email,
       address,
       phone,
@@ -36,7 +40,7 @@ const createOrder = async (req, res) => {
       await tranEmailApi.sendTransacEmail({
         sender: { 
           email: process.env.OWNER_EMAIL,
-          name: "Ninad Store"   // ✅ small safe add
+          name: "Ninad Store"
         },
         to: [{ email: process.env.OWNER_EMAIL }],
         subject: "🛒 New Order Received",
@@ -48,6 +52,10 @@ const createOrder = async (req, res) => {
             <h2 style="color:#4f46e5;">New Order 🚀</h2>
 
             <h3>Customer Details</h3>
+
+            <!-- ✅ ADD NAME HERE -->
+            <p><b>Name:</b> ${name || "-"}</p>
+
             <p><b>Email:</b> ${email || "-"}</p>
             <p><b>Phone:</b> ${phone || "-"}</p>
             <p><b>Address:</b> ${address || "-"}</p>
@@ -87,7 +95,7 @@ const createOrder = async (req, res) => {
 
   } catch (error) {
     console.error("ORDER ERROR:", error);
-    res.status(500).json({ message: error.message }); // ✅ error visible
+    res.status(500).json({ message: error.message });
   }
 };
 
