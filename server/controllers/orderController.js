@@ -7,7 +7,7 @@ const createOrder = async (req, res) => {
 
     const safeTotal = isNaN(total) ? 0 : total;
 
-    // ✅ SAVE ORDER (SAFE FIX)
+    // ✅ SAVE ORDER
     const order = new Order({
       cart: Array.isArray(cart)
         ? cart.map(item => ({
@@ -25,8 +25,7 @@ const createOrder = async (req, res) => {
 
     await order.save();
 
-    
-    // 🔥 EMAIL TRY (Brevo) - TEMP DISABLED
+    // 🔥 EMAIL TRY (Brevo) - SAME PLACE, SAFE
     try {
       const client = SibApiV3Sdk.ApiClient.instance;
       const apiKey = client.authentications["api-key"];
@@ -35,7 +34,10 @@ const createOrder = async (req, res) => {
       const tranEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
 
       await tranEmailApi.sendTransacEmail({
-        sender: { email: process.env.OWNER_EMAIL },
+        sender: { 
+          email: process.env.OWNER_EMAIL,
+          name: "Ninad Store"   // ✅ small safe add
+        },
         to: [{ email: process.env.OWNER_EMAIL }],
         subject: "🛒 New Order Received",
 
@@ -80,13 +82,12 @@ const createOrder = async (req, res) => {
     } catch (mailError) {
       console.log("Email failed ❌", mailError.message);
     }
-    
 
     res.status(201).json({ message: "Order saved ✅" });
 
   } catch (error) {
     console.error("ORDER ERROR:", error);
-    res.status(500).json({ message: error.message }); // ✅ ONLY CHANGE
+    res.status(500).json({ message: error.message }); // ✅ error visible
   }
 };
 
