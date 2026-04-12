@@ -4,7 +4,8 @@ const orderSchema = new mongoose.Schema({
   cart: [
     {
       name: String,
-      price: String   // ✅ FIX (Number se String kiya)
+    price: Number,
+    qty: Number  // ✅ FIX (Number se String kiya)
     }
   ],
   total: Number,
