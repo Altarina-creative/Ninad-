@@ -18,6 +18,9 @@ export default function Admin() {
   const [preview, setPreview] = useState([]);
   const [products, setProducts] = useState([]);
 
+  // ✅ ADDED (EDIT ID)
+  const [editId, setEditId] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/admin-login");
@@ -28,8 +31,6 @@ export default function Admin() {
     axios.get(`${BASE_URL}/api/products`)
       .then(res => {
         console.log("API DATA:", res.data);
-
-        // ✅ FIX (consistent response)
         setProducts(res.data.products);
       })
       .catch(() => setProducts([]));
@@ -69,8 +70,6 @@ export default function Admin() {
     try {
       const res = await axios.post(`${BASE_URL}/api/products`, form);
 
-      console.log("SERVER RESPONSE:", res.data);
-
       Swal.fire("Product Added ✅", "Success", "success");
 
       setForm({ name: "", price: "", img: [], discount: "" });
@@ -80,6 +79,37 @@ export default function Admin() {
     } catch (err) {
       console.log("ERROR:", err.response?.data);
       Swal.fire("Error ❌", "Failed to add product", "error");
+    }
+  };
+
+  // ✅ ADDED: EDIT CLICK
+  const handleEdit = (product) => {
+    setForm({
+      name: product.name,
+      price: product.price,
+      img: product.img,
+      discount: product.discount
+    });
+
+    setPreview(product.img);
+    setEditId(product._id);
+  };
+
+  // ✅ ADDED: UPDATE PRODUCT
+  const updateProduct = async () => {
+    try {
+      await axios.put(`${BASE_URL}/api/products/${editId}`, form);
+
+      Swal.fire("Updated ✅", "Product updated successfully", "success");
+
+      setForm({ name: "", price: "", img: [], discount: "" });
+      setPreview([]);
+      setEditId(null);
+
+      fetchProducts();
+    } catch (err) {
+      console.log(err);
+      Swal.fire("Error ❌", "Update failed", "error");
     }
   };
 
@@ -151,11 +181,12 @@ export default function Admin() {
           ))}
         </div>
 
+        {/* 🔥 CHANGE ONLY THIS BUTTON */}
         <button
-          onClick={addProduct}
+          onClick={editId ? updateProduct : addProduct}
           className="mt-4 bg-black text-white px-6 py-2 rounded-lg"
         >
-          Add Product
+          {editId ? "Update Product" : "Add Product"}
         </button>
       </div>
 
@@ -167,6 +198,14 @@ export default function Admin() {
 
             <h2 className="mt-2 font-semibold">{p.name}</h2>
             <p className="text-green-600">₹{p.price}</p>
+
+            {/* ✅ ADDED EDIT BUTTON */}
+            <button
+              onClick={() => handleEdit(p)}
+              className="mt-2 w-full bg-blue-500 text-white py-2 rounded-lg"
+            >
+              Edit
+            </button>
 
             <button
               onClick={() => deleteProduct(p._id)}
