@@ -116,6 +116,19 @@ export default function Cart() {
         confirmButtonText: "OK"
       }).then(() => {
         clearCart();
+
+        // ✅ FORM RESET ADDED
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          address1: "",
+          address2: "",
+          city: "",
+          state: "",
+          country: "India",
+          pincode: ""
+        });
       });
 
     } catch (err) {
@@ -162,7 +175,6 @@ export default function Cart() {
               </button>
             </div>
           ) : (
-            // ✅ FIXED HERE
             cart.map((item, index) => (
               <div key={item.id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
                 <div className="flex gap-4 items-center">
@@ -191,7 +203,6 @@ export default function Cart() {
                   </div>
                 </div>
 
-                {/* ✅ FIXED HERE */}
                 <button onClick={() => removeItem(index)} className="text-red-500">
                   Remove
                 </button>
@@ -305,7 +316,6 @@ export default function Cart() {
         </div>
       </div>
 
-      {/* IMAGE ZOOM */}
       {zoomImg && (
         <div
           className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
