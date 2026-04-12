@@ -91,7 +91,7 @@ const Contact = () => {
 
             <p>
               📧 <span className="font-medium">Email:</span><br />
-              ninaduttarakhand643@gmail.com
+              ninaduttarakhand@gmail.com
             </p>
 
             <p>
