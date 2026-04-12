@@ -5,7 +5,6 @@ const addProduct = async (req, res) => {
   try {
     const { name, price, img, discount } = req.body;
 
-    // ✅ FIX (validation simplified)
     if (!name || !price) {
       return res.status(400).json({ msg: "Name & Price required ❌" });
     }
@@ -13,13 +12,12 @@ const addProduct = async (req, res) => {
     const product = new Product({
       name,
       price,
-      img: img || [],            // ✅ FIX (safe fallback)
-      discount: discount || ""   // ✅ FIX (safe fallback)
+      img: img || [],
+      discount: discount || ""
     });
 
     await product.save();
 
-    // ✅ FIX (return product also)
     res.json({ message: "Product Added ✅", product });
 
   } catch (err) {
@@ -32,7 +30,6 @@ const addProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   const products = await Product.find();
 
-  // ✅ FIX (consistent response)
   res.json({ products });
 };
 
@@ -42,4 +39,34 @@ const deleteProduct = async (req, res) => {
   res.json({ message: "Deleted ✅" });
 };
 
-module.exports = { addProduct, getProducts, deleteProduct };
+
+
+// ✅ ONLY ADDED (UPDATE PRODUCT)
+const updateProduct = async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.json({
+      message: "Updated ✅",
+      product: updatedProduct
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Update Failed ❌" });
+  }
+};
+
+
+
+// ✅ ONLY ADD THIS EXPORT LINE
+module.exports = {
+  addProduct,
+  getProducts,
+  deleteProduct,
+  updateProduct
+};
