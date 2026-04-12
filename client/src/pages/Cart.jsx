@@ -45,9 +45,10 @@ export default function Cart() {
     ));
   };
 
-  // Remove
-  const removeItem = (id) => {
-    const updated = cart.filter(item => item.id !== id);
+  // ✅ FIXED REMOVE (ONLY CHANGE)
+  const removeItem = (index) => {
+    const updated = [...cart];
+    updated.splice(index, 1);
     setCart(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
   };
@@ -76,7 +77,7 @@ export default function Cart() {
       }
     }
 
-return sum + Math.round((price * discount / 100) * item.qty);
+    return sum + Math.round((price * discount / 100) * item.qty);
   }, 0);
 
   // ✅ FINAL TOTAL
@@ -100,7 +101,7 @@ return sum + Math.round((price * discount / 100) * item.qty);
       await axios.post("https://ninad.onrender.com/api/order", {
         cart,
         total,
-        name: form.name,   // ✅ YAHI ADD KARNA HAI
+        name: form.name,
         email: form.email,
         phone: form.phone,
         pincode: form.pincode,
@@ -161,11 +162,11 @@ return sum + Math.round((price * discount / 100) * item.qty);
               </button>
             </div>
           ) : (
-            cart.map(item => (
+            // ✅ FIXED HERE
+            cart.map((item, index) => (
               <div key={item.id} className="bg-white p-4 rounded-xl shadow flex justify-between items-center">
                 <div className="flex gap-4 items-center">
                   
-                  {/* ✅ ONLY ADD: CLICK TO ZOOM */}
                   <img
                     src={item.img?.[0] || item.img || "https://via.placeholder.com/100"}
                     className="w-20 h-20 rounded-lg object-cover cursor-pointer"
@@ -190,7 +191,8 @@ return sum + Math.round((price * discount / 100) * item.qty);
                   </div>
                 </div>
 
-                <button onClick={() => removeItem(item.id)} className="text-red-500">
+                {/* ✅ FIXED HERE */}
+                <button onClick={() => removeItem(index)} className="text-red-500">
                   Remove
                 </button>
               </div>
@@ -303,7 +305,7 @@ return sum + Math.round((price * discount / 100) * item.qty);
         </div>
       </div>
 
-      {/* ✅ ADD ONLY: IMAGE ZOOM */}
+      {/* IMAGE ZOOM */}
       {zoomImg && (
         <div
           className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
@@ -312,7 +314,6 @@ return sum + Math.round((price * discount / 100) * item.qty);
           <img src={zoomImg} className="max-h-[90%] max-w-[90%] rounded-lg" />
         </div>
       )}
-
     </div>
   );
 }
