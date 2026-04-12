@@ -8,18 +8,20 @@ const createOrder = async (req, res) => {
     const safeTotal = isNaN(total) ? 0 : total;
 
     // ✅ SAVE ORDER
- const order = new Order({
-  cart: cart.map(item => ({
-    name: item.name,
-    price: Number(item.price),
-    qty: item.qty
-  })),
-  total: safeTotal,
-  email,
-  address,
-  phone,
-  pincode
-});
+    const order = new Order({
+      cart: Array.isArray(cart)
+        ? cart.map(item => ({
+            name: item.name,
+            price: Number(item.price),
+            qty: item.qty
+          }))
+        : [],
+      total: safeTotal,
+      email,
+      address,
+      phone,
+      pincode
+    });
 
     await order.save();
 
