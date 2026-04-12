@@ -100,6 +100,7 @@ return sum + Math.round((price * discount / 100) * item.qty);
       await axios.post("https://ninad.onrender.com/api/order", {
         cart,
         total,
+        name: form.name,   // ✅ YAHI ADD KARNA HAI
         email: form.email,
         phone: form.phone,
         pincode: form.pincode,
