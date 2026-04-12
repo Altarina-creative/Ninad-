@@ -8,14 +8,14 @@ const createOrder = async (req, res) => {
     const safeTotal = isNaN(total) ? 0 : total;
 
     // ✅ SAVE ORDER
-    const order = new Order({
-      cart,
-      total: safeTotal,
-      email,
-      address,
-      phone,
-      pincode
-    });
+   const order = new Order({
+  cart,
+  total: safeTotal,
+  email,
+  address,
+  phone,
+  pincode
+});
 
     await order.save();
 
