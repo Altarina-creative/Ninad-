@@ -7,13 +7,13 @@ const createOrder = async (req, res) => {
 
     const safeTotal = isNaN(total) ? 0 : total;
 
-    // ✅ SAVE ORDER
+    // ✅ SAVE ORDER (SAFE FIX)
     const order = new Order({
       cart: Array.isArray(cart)
         ? cart.map(item => ({
-            name: item.name,
-            price: Number(item.price),
-            qty: item.qty
+            name: item?.name || "Item",
+            price: Number(item?.price) || 0,
+            qty: item?.qty || 1
           }))
         : [],
       total: safeTotal,
@@ -25,7 +25,7 @@ const createOrder = async (req, res) => {
 
     await order.save();
 
-    /*
+    
     // 🔥 EMAIL TRY (Brevo) - TEMP DISABLED
     try {
       const client = SibApiV3Sdk.ApiClient.instance;
@@ -80,13 +80,13 @@ const createOrder = async (req, res) => {
     } catch (mailError) {
       console.log("Email failed ❌", mailError.message);
     }
-    */
+    
 
     res.status(201).json({ message: "Order saved ✅" });
 
   } catch (error) {
     console.error("ORDER ERROR:", error);
-    res.status(500).json({ message: "Error saving order ❌" });
+    res.status(500).json({ message: error.message }); // ✅ ONLY CHANGE
   }
 };
 
