@@ -25,7 +25,8 @@ const createOrder = async (req, res) => {
 
     await order.save();
 
-    // 🔥 EMAIL TRY (Brevo)
+    /*
+    // 🔥 EMAIL TRY (Brevo) - TEMP DISABLED
     try {
       const client = SibApiV3Sdk.ApiClient.instance;
       const apiKey = client.authentications["api-key"];
@@ -79,12 +80,13 @@ const createOrder = async (req, res) => {
     } catch (mailError) {
       console.log("Email failed ❌", mailError.message);
     }
+    */
 
     res.status(201).json({ message: "Order saved ✅" });
 
   } catch (error) {
     console.error("ORDER ERROR:", error);
-  res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error saving order ❌" });
   }
 };
 
