@@ -10,26 +10,27 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json({ limit: "50mb" })); // ✅ FIX
-app.use(express.urlencoded({ limit: "50mb", extended: true })); // ✅ FIX
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Routes
 const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const productRoutes = require("./routes/productRoutes");
 const joinRoutes = require("./routes/joinRoutes");
-
-// ✅ ADD THIS (ADMIN ROUTE FIX)
 const adminRoutes = require("./routes/adminRoutes");
 
+// ✅ ADD (NEW)
+const donationRoutes = require("./routes/donationRoutes");
+
+// Route use
 app.use("/api/contact", contactRoutes);
 app.use("/api/order", orderRoutes);
-
-// ✅ FIX (IMPORTANT)
 app.use("/api", productRoutes);
-
-// ✅ ADD THIS (ADMIN ROUTE REGISTER)
 app.use("/api", adminRoutes);
+
+// ✅ ADD (NEW)
+app.use("/api", donationRoutes);
 
 app.use("/api/join", joinRoutes);
 
