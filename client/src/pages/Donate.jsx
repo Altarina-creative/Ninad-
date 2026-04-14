@@ -175,8 +175,8 @@ const Donate = () => {
                 <span className="font-medium w-[120px]">Branch</span>
                 <span className="text-right flex-1">
                   Mehal Chori District-Chamoli Uttarakhand
-                  <br className="hidden md:block" />
-                  246431
+                  <br />
+                <span className="block mt-1">246431</span>              
                 </span>
               </div>
             </div>
