@@ -1,9 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import qrImg from "../assets/upi.jpeg";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Donate = () => {
+
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    amount: "",
+    reason: ""
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.name || !form.phone || !form.amount || !form.reason) {
+      Swal.fire("Error", "Please fill all fields", "error");
+      return;
+    }
+
+    try {
+      await axios.post("https://ninad.onrender.com/api/donate", form);
+
+      Swal.fire("Success 🎉", "Thank you for your donation!", "success");
+
+      setForm({
+        name: "",
+        phone: "",
+        amount: "",
+        reason: ""
+      });
+
+    } catch (error) {
+      Swal.fire("Error", "Something went wrong!", "error");
+    }
+  };
+
   return (
     <div className="bg-gradient-to-br from-green-50 via-white to-green-100 min-h-screen px-4 md:px-10 py-12">
+
+      {/* 80G BANNER */}
+      <div className="bg-green-700 text-white text-center py-6 px-4 rounded-2xl mb-10 shadow-md">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Get 50% Exemption On Your Donation
+        </h2>
+        <p className="mt-2 text-sm opacity-90">
+          Under Section 80G Of Income Tax Act 1961
+        </p>
+      </div>
 
       {/* HERO SECTION */}
       <div className="text-center mb-14">
@@ -16,13 +65,11 @@ const Donate = () => {
         </p>
       </div>
 
-      {/* MAIN GRID */}
       <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
 
         {/* LEFT SIDE */}
         <div className="space-y-8">
 
-          {/* EMOTIONAL CARD */}
           <div className="bg-white shadow-lg rounded-3xl p-6 border border-green-100 hover:shadow-xl transition">
             <h2 className="text-xl font-semibold text-green-700 mb-3">
               Why Your Help Matters ❤️
@@ -33,7 +80,6 @@ const Donate = () => {
             </p>
           </div>
 
-          {/* IMPACT CARDS */}
           <div className="bg-white shadow-lg rounded-3xl p-6 border border-green-100">
             <h2 className="text-xl font-semibold text-green-700 mb-4">
               Your Contribution Impact 🌱
@@ -64,7 +110,6 @@ const Donate = () => {
             </div>
           </div>
 
-          {/* FINAL MESSAGE */}
           <div className="bg-gradient-to-r from-green-600 to-green-500 text-white p-6 rounded-3xl shadow-lg">
             <h2 className="text-xl font-semibold mb-2">
               Be the Reason Someone Smiles 😊
@@ -79,7 +124,7 @@ const Donate = () => {
         {/* RIGHT SIDE */}
         <div className="space-y-8">
 
-          {/* QR CARD */}
+          {/* QR */}
           <div className="bg-white shadow-lg rounded-3xl p-6 text-center border border-green-100 hover:shadow-xl transition">
             <h2 className="text-xl font-semibold text-green-700 mb-4">
               Scan & Donate 📲
@@ -94,14 +139,11 @@ const Donate = () => {
             </div>
 
             <p className="mt-4 text-gray-600">
-              UPI ID:{" "}
-              <span className="font-semibold text-green-700">
-                ninaabadlav@sbi
-              </span>
+              UPI ID: <span className="font-semibold text-green-700">ninaabadlav@sbi</span>
             </p>
           </div>
 
-          {/* BANK DETAILS */}
+          {/* ✅ BANK DETAILS (BACK ADDED) */}
           <div className="bg-white shadow-lg rounded-3xl p-6 border border-green-100">
             <h2 className="text-xl font-semibold text-green-700 mb-4">
               Bank Details 🏦
@@ -129,20 +171,46 @@ const Donate = () => {
                 <span>State Bank of India</span>
               </div>
 
-             <div className="flex justify-between gap-4">
-            <span className="font-medium w-[120px]">Branch</span>
-
-           <span className="text-right flex-1">
-            Mehal Chori District-Chamoli Uttarakhand
-             <br className="hidden md:block" />
-            246431
-           </span>
-            </div>
+              <div className="flex justify-between gap-4">
+                <span className="font-medium w-[120px]">Branch</span>
+                <span className="text-right flex-1">
+                  Mehal Chori District-Chamoli Uttarakhand
+                  <br className="hidden md:block" />
+                  246431
+                </span>
+              </div>
             </div>
           </div>
 
-        </div>
+          {/* FORM */}
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white shadow-lg rounded-3xl p-6 border border-green-100 space-y-4"
+          >
+            <h2 className="text-xl font-semibold text-green-700">
+              Enter Donation Details 📝
+            </h2>
 
+            <input type="text" name="name" placeholder="Your Name" value={form.name} onChange={handleChange} className="w-full p-3 border rounded-xl" />
+            <input type="number" name="phone" placeholder="Mobile Number" value={form.phone} onChange={handleChange} className="w-full p-3 border rounded-xl" />
+            <input type="number" name="amount" placeholder="Donation Amount (₹)" value={form.amount} onChange={handleChange} className="w-full p-3 border rounded-xl" />
+
+            <select name="reason" value={form.reason} onChange={handleChange} className="w-full p-3 border rounded-xl text-gray-600">
+              <option value="">What inspired you to give?</option>
+              <option value="Education Support">Education Support</option>
+              <option value="Food Donation">Food Donation</option>
+              <option value="Women Empowerment">Women Empowerment</option>
+              <option value="Healthcare Support">Healthcare Support</option>
+              <option value="General Charity">General Charity</option>
+            </select>
+
+            <button type="submit" className="w-full bg-green-600 text-white py-3 rounded-xl hover:bg-green-700">
+              Submit Donation ❤️
+            </button>
+
+          </form>
+
+        </div>
       </div>
     </div>
   );
