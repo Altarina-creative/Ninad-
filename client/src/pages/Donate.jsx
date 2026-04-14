@@ -47,7 +47,7 @@ const Donate = () => {
       {/* 80G BANNER */}
       <div className="bg-green-700 text-white text-center py-6 px-4 rounded-2xl mb-10 shadow-md">
         <h2 className="text-2xl md:text-3xl font-bold">
-          Get 50% Exemption On Your Donation
+           Exemption On Your Donation
         </h2>
         <p className="mt-2 text-sm opacity-90">
           Under Section 80G Of Income Tax Act 1961
