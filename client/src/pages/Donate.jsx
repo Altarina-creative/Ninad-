@@ -216,7 +216,7 @@ const Donate = () => {
       {/* ✅ 80G FULL WIDTH SECTION (FORM KE NICHE) */}
       <div className="mt-16 bg-green-700 text-white py-20 px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-bold">
-          Get 50% Exemption On Your Donation
+              Exemption On Your Donation
         </h2>
 
         <p className="mt-4 text-lg md:text-2xl opacity-90">
