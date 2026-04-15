@@ -8,6 +8,8 @@ const addDonation = async (req, res) => {
     const newDonation = new Donation({
       name,
       phone,
+      address,
+      pan,     
       amount,
       reason
     });
