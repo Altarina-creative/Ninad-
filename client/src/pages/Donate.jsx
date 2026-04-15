@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 
 const Donate = () => {
 
-  // ✅ UPDATED STATE
   const [form, setForm] = useState({
     name: "",
     address: "",
@@ -48,16 +47,6 @@ const Donate = () => {
 
   return (
     <div className="bg-gradient-to-br from-green-50 via-white to-green-100 min-h-screen px-4 md:px-10 py-12">
-
-      {/* 80G BANNER */}
-      <div className="bg-green-700 text-white text-center py-6 px-4 rounded-2xl mb-10 shadow-md">
-        <h2 className="text-2xl md:text-3xl font-bold">
-           Exemption On Your Donation
-        </h2>
-        <p className="mt-2 text-sm opacity-90">
-          Under Section 80G Of Income Tax Act 1961
-        </p>
-      </div>
 
       {/* HERO SECTION */}
       <div className="text-center mb-14">
@@ -187,7 +176,7 @@ const Donate = () => {
             </div>
           </div>
 
-          {/* ✅ UPDATED FORM */}
+          {/* FORM */}
           <form
             onSubmit={handleSubmit}
             className="bg-white shadow-lg rounded-3xl p-6 border border-green-100 space-y-4"
@@ -223,6 +212,18 @@ const Donate = () => {
 
         </div>
       </div>
+
+      {/* ✅ 80G FULL WIDTH SECTION (FORM KE NICHE) */}
+      <div className="mt-16 bg-green-700 text-white py-20 px-4 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold">
+          Get 50% Exemption On Your Donation
+        </h2>
+
+        <p className="mt-4 text-lg md:text-2xl opacity-90">
+          Under Section 80G Of Income Tax Act 1961
+        </p>
+      </div>
+
     </div>
   );
 };
