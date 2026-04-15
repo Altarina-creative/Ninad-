@@ -5,8 +5,11 @@ import Swal from "sweetalert2";
 
 const Donate = () => {
 
+  // ✅ UPDATED STATE
   const [form, setForm] = useState({
     name: "",
+    address: "",
+    pan: "",
     phone: "",
     amount: "",
     reason: ""
@@ -31,6 +34,8 @@ const Donate = () => {
 
       setForm({
         name: "",
+        address: "",
+        pan: "",
         phone: "",
         amount: "",
         reason: ""
@@ -143,7 +148,7 @@ const Donate = () => {
             </p>
           </div>
 
-          {/* ✅ BANK DETAILS (BACK ADDED) */}
+          {/* BANK DETAILS */}
           <div className="bg-white shadow-lg rounded-3xl p-6 border border-green-100">
             <h2 className="text-xl font-semibold text-green-700 mb-4">
               Bank Details 🏦
@@ -176,27 +181,33 @@ const Donate = () => {
                 <span className="text-right flex-1">
                   Mehal Chori District-Chamoli Uttarakhand
                   <br />
-                <span className="block mt-1">246431</span>              
+                  <span className="block mt-1">246431</span>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* FORM */}
+          {/* ✅ UPDATED FORM */}
           <form
             onSubmit={handleSubmit}
             className="bg-white shadow-lg rounded-3xl p-6 border border-green-100 space-y-4"
           >
             <h2 className="text-xl font-semibold text-green-700">
-              Enter Donation Details 📝
+              Personal Info
             </h2>
 
-            <input type="text" name="name" placeholder="Your Name" value={form.name} onChange={handleChange} className="w-full p-3 border rounded-xl" />
-            <input type="number" name="phone" placeholder="Mobile Number" value={form.phone} onChange={handleChange} className="w-full p-3 border rounded-xl" />
-            <input type="number" name="amount" placeholder="Donation Amount (₹)" value={form.amount} onChange={handleChange} className="w-full p-3 border rounded-xl" />
+            <input type="text" name="name" placeholder="Name" value={form.name} onChange={handleChange} className="w-full p-4 border rounded-2xl" />
 
-            <select name="reason" value={form.reason} onChange={handleChange} className="w-full p-3 border rounded-xl text-gray-600">
-              <option value="">What inspired you to give?</option>
+            <input type="text" name="address" placeholder="Address" value={form.address} onChange={handleChange} className="w-full p-4 border rounded-2xl" />
+
+            <input type="text" name="pan" placeholder="Pancard / Aadhaar" value={form.pan} onChange={handleChange} className="w-full p-4 border rounded-2xl" />
+
+            <input type="number" name="phone" placeholder="Phone" value={form.phone} onChange={handleChange} className="w-full p-4 border rounded-2xl" />
+
+            <input type="number" name="amount" placeholder="Donation Amount (₹)" value={form.amount} onChange={handleChange} className="w-full p-4 border rounded-2xl" />
+
+            <select name="reason" value={form.reason} onChange={handleChange} className="w-full p-4 border rounded-2xl text-gray-600">
+              <option value="">What inspired you to give</option>
               <option value="Education Support">Education Support</option>
               <option value="Food Donation">Food Donation</option>
               <option value="Women Empowerment">Women Empowerment</option>
@@ -204,8 +215,8 @@ const Donate = () => {
               <option value="General Charity">General Charity</option>
             </select>
 
-            <button type="submit" className="w-full bg-green-600 text-white py-3 rounded-xl hover:bg-green-700">
-              Submit Donation ❤️
+            <button type="submit" className="w-full bg-green-600 text-white py-3 rounded-2xl hover:bg-green-700">
+              Donate Now ❤️
             </button>
 
           </form>
