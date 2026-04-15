@@ -75,7 +75,7 @@ const Navbar = () => {
             {[1, 2].map((_, i) => (
               <div key={i} className="ticker-content">
                 🌟 Shri Suresh Kumar Bisht leading our mission &nbsp; | &nbsp;
-                Nitish Singh Bisht Contribution &nbsp; | &nbsp;
+                Nitish singh (vice-President) Shaping our vision with redefining success. &nbsp; | &nbsp;
 
                 <span
                   onClick={() => window.location.href = "/donate"}
