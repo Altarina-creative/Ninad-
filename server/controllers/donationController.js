@@ -6,12 +6,13 @@ const addDonation = async (req, res) => {
     const { name, phone, amount, reason } = req.body;
 
     const newDonation = new Donation({
-      name,
+    name,
+      address, 
+      pan,    
       phone,
-      address,
-      pan,     
       amount,
       reason
+    });
     });
 
     await newDonation.save();
