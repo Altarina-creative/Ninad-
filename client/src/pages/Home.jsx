@@ -68,6 +68,10 @@ await axios.post(`${BASE_URL}/api/join`, formData);
 
   return (
     <div className="text-gray-800">
+       {/* ✅ TOP BANNER (ONLY CHANGE) */}
+      <div className="bg-[#1b4332] text-white text-center py-3 px-4 font-bold text-sm md:text-lg tracking-wide">
+        NINAD (NGO) MOST TRUSTED CHARITY IN UTTARAKHAND
+      </div>
 
       {/* HERO */}
       <section className="pt-8 pb-16 px-6 bg-gradient-to-r from-[#e6f4ea] to-[#dff3e6]">
